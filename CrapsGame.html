@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Craps Game</title>
+    <style type="text/CSS">
+      p.red {
+        color: red;
+      }
+      img {
+        width: 54px;
+        height: 54px;
+      }
+      div {
+        border: 5px ridge royalblue;
+        padding: 10px;
+        width: 120px;
+        margin-bottom: 10px;
+      }
+      .infoDiv {
+        border: 5px ridge grey;
+        padding: 10px;
+        width: auto;
+        margin-bottom: 10px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .point {
+        margin: 0px;
+      }
+      h1 {
+        orientation: center;
+        font-weight: bold;
+        color: green;
+      }
+    </style>
+    <script>
+      var pointDie1Image;
+      var pointDie2Image;
+      var rollDie1Image;
+      var rollDie2Image;
+      var playButton;
+      var rollButton;
+      var messages;
+
+      var myPoint;
+      var die1Value;
+      var die2Value;
+
+      function startGame() {
+        pointDie1Image = document.getElementById("pointDie1");
+        pointDie2Image = document.getElementById("pointDie2");
+        rollDie1Image = document.getElementById("rollDie1");
+        rollDie2Image = document.getElementById("rollDie2");
+        playButton = document.getElementById("playButton");
+        rollButton = document.getElementById("rollButton");
+        messages = document.getElementById("messages");
+
+        // Prepage the GUI
+        rollButton.disabled = true;
+        setImage(pointDie1Image);
+        setImage(pointDie2Image);
+        setImage(rollDie1Image);
+        setImage(rollDie2Image);
+
+        myPoint = 0;
+        firstRoll();
+      }
+
+      function firstRoll() {
+        var sumOfDice = rollDice();
+
+        switch (sumOfDice) {
+          case 7:
+          case 11:
+            messages.innerHTML = "You Win!! Click Play to Play Again";
+            break;
+          case 2:
+          case 3:
+          case 12:
+            messages.innerHTML = "Sorry You Lose!! Click Play to Play Again";
+            break;
+          default:
+            myPoint = sumOfDice;
+            setImage(pointDie1Image, die1Value);
+            setImage(pointDie2Image, die2Value);
+            messages.innerHTML = "Roll Again!";
+            rollButton.disabled = false;
+            playButton.disabled = true;
+        }
+      }
+
+      function rollAgain() {
+        var sumOfDice = rollDice();
+
+        if (sumOfDice == myPoint) {
+          messages.innerHTML =
+            "Congratulations!! You won the game, Click Play to Play again";
+          rollButton.disabled = true;
+          playButton.disabled = false;
+        } else if (sumOfDice == 7) {
+          messages.innerHTML =
+            "Sorry!! You lost the game, Click Play to Play again";
+          rollButton.disabled = true;
+          playButton.disabled = false;
+        }
+      }
+
+      function rollDice() {
+        die1Value = Math.floor(1 + Math.random() * 6);
+        die2Value = Math.floor(1 + Math.random() * 6);
+        showDice();
+        return die1Value + die2Value;
+      }
+
+      function showDice() {
+        setImage(rollDie1Image, die1Value);
+        setImage(rollDie2Image, die2Value);
+      }
+
+      function setImage(dieImage, dieValue) {
+        if (isFinite(dieValue))
+          dieImage.src = "/WEHomepage/die" + dieValue + ".png";
+        else dieImage.src = "/WEHomepage/blank.png";
+      }
+
+      function start() {
+        var playButton = document.getElementById("playButton");
+        playButton.addEventListener("click", startGame, false);
+        var rollButton = document.getElementById("rollButton");
+        rollButton.addEventListener("click", rollAgain, false);
+      }
+
+      window.addEventListener("load", start, false);
+    </script>
+  </head>
+  <body>
+    <p>
+      <a href="/WEHomepage/CrapsGame.html">Click Here to Play the Craps Game</a>
+    </p>
+    <header>
+      <div class="infoDiv">
+        <h1>Name</h1>
+        <h2>Sohaib Hassan</h2>
+      </div>
+      <div class="infoDiv">
+        <h1>Roll No.</h1>
+        <h2>3941-FBAS/BSCS4/F18</h2>
+      </div>
+    </header>
+    <p>
+      <a href="/WEHomepage/CrapsRules.html"
+        >Click here for a Short Video Tutorial of the Game</a
+      >
+    </p>
+    <div class="pointDiv">
+      <p class="point">Point is:</p>
+      <img
+        id="pointDie1"
+        src="/WEHomepage/blank.png"
+        alt="Die 1 of Point Value"
+      />
+      <img
+        id="pointDie2"
+        src="/WEHomepage/blank.png"
+        alt="Die 2 of Point Value"
+      />
+    </div>
+    <div class="rollDiv">
+      <img
+        id="rollDie1"
+        src="/WEHomepage/blank.png"
+        alt="Die 1 of Roll Value"
+      />
+      <img
+        id="rollDie2"
+        src="/WEHomepage/blank.png"
+        alt="Die 2 of Roll Value"
+      />
+    </div>
+    <form action="#">
+      <input id="playButton" type="button" value="Play" />
+      <input id="rollButton" type="button" value="Roll" disabled />
+    </form>
+    <p id="messages" class="red">Click Play to Start the Game</p>
+  </body>
+</html>
